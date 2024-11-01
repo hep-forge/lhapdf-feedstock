@@ -62,8 +62,6 @@ jobs:
           conda update -c conda-forge conda
           conda clean --index-cache -y
           conda install -c conda-forge -y conda-smithy conda-verify anaconda-client
-
-          # conda config --set anaconda_upload no
       
       - name: Rerender Feedstock
         run: conda smithy rerender
@@ -80,8 +78,5 @@ jobs:
         env:
           ANACONDA_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
         run: |
-          echo 1
           [ ! -z "$COMMIT_BRANCH" ] && ANACONDA_LABEL=$COMMIT_BRANCH || ANACONDA_LABEL="main"
-          echo 2
           [ ! -z "$COMMIT_TAG" ] && /usr/share/miniconda/bin/anaconda -t $ANACONDA_TOKEN upload --force pkgs/*/*.tar.bz2 --label $ANACONDA_LABEL
-          echo 3
