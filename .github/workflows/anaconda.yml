@@ -31,7 +31,7 @@ jobs:
       
       - name: Set Package Name, Version and Architecture
         run: |
-          VERSION="${COMMIT_TAG:-${COMMIT_LATEST_TAG:-0.0.0}-dev}"
+          VERSION="${COMMIT_TAG:-${COMMIT_LATEST_TAG:-0.0.0}-patches}"
           VERSION=${VERSION//-/.}
           echo "ANACONDA_VERSION=$VERSION"
           echo "ANACONDA_VERSION=$VERSION" >> $GITHUB_ENV
