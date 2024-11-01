@@ -1,8 +1,8 @@
 build:
-	@echo "build"
+	@conda build . --output pkgs
 
 debug:
-	@echo "debug commands"
+	@conda debug .
 
 publish:
-	@echo "publish"
+	@anaconda -t ~/.conda-smithy/anaconda.token upload --force pkgs/*/*.tar.bz2 --label test
