@@ -2,12 +2,12 @@ package:
   name: {{ environ.get('ANACONDA_PACKAGE')|string|lower }}
   version: {{ environ.get('ANACONDA_VERSION')|string|replace('-', '.') }}
 
-{% set version = environ.get('COMMIT_TAG', environ.get('COMMIT_LATEST_TAG', 0)) %}
+{% set tag = environ.get('COMMIT_TAG', environ.get('COMMIT_LATEST_TAG', 0)) %}
 {% set sha256 = sorted({
     "6.5.4": "9024b87102b0c860cbd49935bdecf3c89f710d840450733fb050aec9017c9e29"
 }) %}
 
-{% set version = version or max(sha256.keys()) %}
+{% set version = tag or max(sha256.keys()) %}
 source:
   url: "https://lhapdf.hepforge.org/downloads/?f=LHAPDF-{{ version }}.tar.gz"
   {% if sha256.get(version, None) %}
