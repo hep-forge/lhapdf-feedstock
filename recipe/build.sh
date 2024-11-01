@@ -2,5 +2,5 @@
 
 ./configure --prefix=${PWD}/install
 
-make
+make -j
 make install

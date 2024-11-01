@@ -36,9 +36,7 @@ extra:
   recipe-maintainers:
     - meiyasan
 
-
-outputs:
-  - name: {{ name|lower }}
-    version: {{ version }}
-    directory: ./install
-
+#outputs:
+#  - name: {{ name|lower }}
+#    version: {{ version }}
+#    directory: ./install
