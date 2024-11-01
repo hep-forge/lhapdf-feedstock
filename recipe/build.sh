@@ -1,6 +1,6 @@
 #! /usr/bin/bash
 
-./configure --prefix=${PWD}/install
+./configure --prefix=$PREFIX
 
 make -j
 make install
