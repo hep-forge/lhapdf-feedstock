@@ -80,5 +80,8 @@ jobs:
         env:
           ANACONDA_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
         run: |
+          echo 1
           [ ! -z "$COMMIT_BRANCH" ] && ANACONDA_LABEL=$COMMIT_BRANCH || ANACONDA_LABEL="main"
+          echo 2
           [ ! -z "$COMMIT_TAG" ] && /usr/share/miniconda/bin/anaconda -t $ANACONDA_TOKEN upload --force pkgs/*/*.tar.bz2 --label $ANACONDA_LABEL
+          echo 3
