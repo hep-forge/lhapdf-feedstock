@@ -16,20 +16,20 @@ source:
 
 requirements:
   build:
-    - {{ compiler('gfortran') }}   # GNU Fortran compiler
-    - {{ compiler('c') }}          # GNU C compiler
-    - {{ compiler('cxx') }}        # GNU C++ compiler
-    - cmake                        # Build system
-    - make                         # Make utility
-    - python<3.10
-
+    - {{ compiler('cxx') }}
+    - {{ compiler('c') }}
+    - python
+    - cython >=0.24
+    - gnuconfig
+    - make
+    - automake
+    - autoconf
+    - libtool
   host:
-    - python<3.10
-    - pip
-    - setuptools
-
+    - python
+    - cython >=0.24
   run:
-    - python<3.10
+    - python
 
 about:
   home: "https://lhapdf.hepforge.org"
