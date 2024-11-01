@@ -7,7 +7,7 @@ package:
     "6.5.4": "9024b87102b0c860cbd49935bdecf3c89f710d840450733fb050aec9017c9e29"
 } %}
 
-{% set version = version or max(sha256.keys()) %}
+{% set version = version or sorted(sha256.keys())[-1] %}
 source:
   url: "https://lhapdf.hepforge.org/downloads/?f=LHAPDF-{{ version }}.tar.gz"
   {% if sha256.get(version, None) %}
