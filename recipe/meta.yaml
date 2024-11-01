@@ -10,7 +10,7 @@ package:
 {% set version = version or max(sha256.keys()) %}
 source:
   url: "https://lhapdf.hepforge.org/downloads/?f=LHAPDF-{{ version }}.tar.gz"
-  {% if sha256.get(version, None)) %}
+  {% if sha256.get(version, None) %}
   sha256: {{ sha256.get(version) }}
   {% endif %}
 
