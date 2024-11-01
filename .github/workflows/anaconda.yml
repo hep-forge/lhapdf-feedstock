@@ -63,7 +63,7 @@ jobs:
           conda clean --index-cache -y
           conda install -c conda-forge -y conda-smithy conda-verify anaconda-client
 
-          conda config --set anaconda_upload no
+          # conda config --set anaconda_upload no
       
       - name: Rerender Feedstock
         run: conda smithy rerender
