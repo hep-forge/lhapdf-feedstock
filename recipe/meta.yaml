@@ -21,15 +21,15 @@ requirements:
     - {{ compiler('cxx') }}        # GNU C++ compiler
     - cmake                        # Build system
     - make                         # Make utility
-    - python
+    - python<3.10
 
   host:
-    - python
+    - python<3.10
     - pip
     - setuptools
 
   run:
-    - python
+    - python<3.10
 
 about:
   home: "https://lhapdf.hepforge.org"
