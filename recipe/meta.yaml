@@ -1,0 +1,46 @@
+{% set versions = {
+    "6.5.4": "2443a4b32cc3b0597c8248bd6e25703ace9c91a7a253c5f60b1b5428ef9c869e"
+} %}
+
+
+{% set version = environ.get('COMMIT_VERSION', None) %}
+{% set version = version or versions.keys()|first %}
+{% set version = version|string %}
+
+package:
+  name: {{ environ.get('ANACONDA_PACKAGE', "lhapdf")|string|lower }}
+  version: {{ environ.get('ANACONDA_VERSION', version)|replace("-", ".") }}
+
+source:
+  url: "https://lhapdf.hepforge.org/downloads/?f=LHAPDF-{{ version }}.tar.gz"
+  {% if versions.get(version, None) %}
+  sha256: {{ versions.get(version) }}
+  {% endif %}
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+    - {{ compiler('c') }}
+    - python
+    - cython >=0.24
+    - gnuconfig
+    - make
+    - automake
+    - autoconf
+    - libtool
+  host:
+    - python
+    - cython >=0.24
+  run:
+    - python
+
+about:
+  home: "https://lhapdf.hepforge.org"
+  license: "GPL-3.0"
+  summary: "LHAPDF is the standard tool for evaluating parton distribution functions (PDFs) in high-energy physics."
+  description: |
+    LHAPDF is the standard tool for evaluating parton distribution functions (PDFs) in high-energy physics. PDFs encode the flavour and momentum structure of composite particles, such as protons, pions and nuclei; most cross-section calculations are based on parton-level matrix-elements which must be connected to the real interacting particles, hence PDFs are an essential ingredient of phenomenological and experimental studies at hadron and heavy-ion colliders (e.g. LHC, HERA, Tevatron, EIC, FCC) and in cosmic-ray physics.
+
+extra:
+  recipe-maintainers:
+    - meiyasan
