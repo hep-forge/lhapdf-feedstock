@@ -2,7 +2,7 @@ package:
   name: {{ environ.get('ANACONDA_PACKAGE')|string|lower }}
   version: {{ environ.get('ANACONDA_VERSION')|string|replace('-', '.') }}
 
-{% set version = environ.get('COMMIT_TAG', None) or environ.get('COMMIT_LATEST_TAG', None) or 0 %}
+{% set version = environ.get('COMMIT_TAG', None) or environ.get('COMMIT_LATEST_TAG', None) or None %}
 {% set sha256 = {
     "6.5.4": "2443a4b32cc3b0597c8248bd6e25703ace9c91a7a253c5f60b1b5428ef9c869e"
 } %}
