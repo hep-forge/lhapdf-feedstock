@@ -1,0 +1,82 @@
+name: Conda Build
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          tags: true
+
+      - name: Fetch Git Repository Information
+        run: |
+          COMMIT_SHA=$(git rev-parse HEAD || exit 1)
+          COMMIT_LATEST_TAG=$(git describe --tags --abbrev=0 2> /dev/null || echo "")
+          COMMIT_TAG=$(git show-ref 2> /dev/null | grep $COMMIT_SHA | grep refs/tags/ | sed "s,refs/tags/,,g" | awk '{print $2}' | head -n1 || echo "")
+          COMMIT_BRANCH=$(git show-ref 2> /dev/null | grep $COMMIT_SHA | grep refs/remotes/origin/ | sed "s,refs/remotes/origin/,,g" | awk '{print $2}' | head -n1 || echo "")
+          
+          [ ! -z "$COMMIT_SHA" ] && echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_ENV
+          [ ! -z "$COMMIT_TAG" ] && echo "COMMIT_TAG=$COMMIT_TAG" >> $GITHUB_ENV
+          [ ! -z "$COMMIT_LATEST_TAG" ] && echo "COMMIT_LATEST_TAG=$COMMIT_LATEST_TAG" >> $GITHUB_ENV
+          [ ! -z "$COMMIT_BRANCH" ] && echo "COMMIT_BRANCH=$COMMIT_BRANCH" >> $GITHUB_ENV
+      
+      - name: Set Package Name, Version and Architecture
+        run: |
+          VERSION="${COMMIT_TAG:-${COMMIT_LATEST_TAG:-0.0.0}-dev}"
+          VERSION=${VERSION//-/.}
+          echo "ANACONDA_VERSION=$VERSION"
+          echo "ANACONDA_VERSION=$VERSION" >> $GITHUB_ENV
+
+          PACKAGE="$(basename `git rev-parse --show-toplevel` | sed 's,-feedstock,,g')"
+          echo "ANACONDA_PACKAGE=$PACKAGE"
+          echo "ANACONDA_PACKAGE=$PACKAGE" >> $GITHUB_ENV
+          
+          ANACONDA_OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
+          echo "ANACONDA_OS=$ANACONDA_OS"
+          echo "ANACONDA_OS=$ANACONDA_OS" >> $GITHUB_ENV
+          
+          ANACONDA_ARCH="$(uname -m)"
+          echo "ANACONDA_ARCH=$ANACONDA_ARCH"
+          echo "ANACONDA_ARCH=$ANACONDA_ARCH" >> $GITHUB_ENV
+
+          echo "CONDA_BLD_PATH=/tmp/conda-bld" >> $GITHUB_ENV
+          
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v2
+
+      - name: Install Forge & Tools
+        run: |
+          conda config --add channels defaults
+          conda config --add channels conda-forge
+          conda config --add channels hep-forge
+          
+          conda update -c conda-forge conda
+          conda clean --index-cache -y
+          conda install -c conda-forge -y conda-smithy conda-verify anaconda-client
+      
+      - name: Rerender Feedstock
+        run: conda smithy rerender
+
+      - name: Check Environment
+        run: |
+          env
+    
+      - name: Build Package
+        run: |
+          conda build . --prefix-length 80 --output-folder pkgs
+
+      - name: Upload to Anaconda
+        env:
+          ANACONDA_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
+        run: |
+          [ ! -z "$COMMIT_BRANCH" ] && ANACONDA_LABEL=$COMMIT_BRANCH || ANACONDA_LABEL="main"
+          [ ! -z "$COMMIT_TAG" ] && /usr/share/miniconda/bin/anaconda -t $ANACONDA_TOKEN upload --force pkgs/*/*.tar.bz2 --label $ANACONDA_LABEL
