@@ -1,5 +1,5 @@
 {% set versions = {
-    "6.5.4": "2443a4b32cc3b0597c8248bd6e25703ace9c91a7a253c5f60b1b5428ef9c869e"
+    "5.9.1": "86b9b046d7f25627ce2aab6847ef1c5534972f4bae18de98225080cf5086919c"
 } %}
 
 
@@ -12,7 +12,7 @@ package:
   version: {{ environ.get('ANACONDA_VERSION', version)|replace("-", ".") }}
 
 source:
-  url: "https://lhapdf.hepforge.org/downloads/?f=LHAPDF-{{ version }}.tar.gz"
+  url: "https://lhapdf.hepforge.org/downloads/?f=old/lhapdf-{{ version }}.tar.gz"
   {% if versions.get(version, None) %}
   sha256: {{ versions.get(version) }}
   {% endif %}
