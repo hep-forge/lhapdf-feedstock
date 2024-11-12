@@ -19,6 +19,7 @@ source:
 
 requirements:
   build:
+    - {{ compiler('gfortran') }}
     - {{ compiler('cxx') }}
     - {{ compiler('c') }}
     - python<3
