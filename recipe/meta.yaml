@@ -25,6 +25,7 @@ requirements:
     - cython >=0.24
     - gnuconfig
     - make
+    - cmake
     - automake
     - autoconf
     - libtool
