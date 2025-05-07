@@ -4,7 +4,13 @@
 if [ ! -z "${LHAPDF_DATA_PATH+x}" ]; then
 	export CONDA_BACKUP_LHAPDF_DATA_PATH="${LHAPDF_DATA_PATH}"
 fi
-
 if [ -z "${LHAPDF_DATA_PATH+x}" ]; then
         export LHAPDF_DATA_PATH="${CONDA_PREFIX}/share/LHAPDF"
+fi
+
+if [ ! -z "${LHAPATH+x}" ]; then
+	export CONDA_BACKUP_LHAPATH="${LHAPATH}"
+fi
+if [ -z "${LHAPATH+x}" ]; then
+        export LHAPATH="${CONDA_PREFIX}/share/LHAPDF"
 fi
