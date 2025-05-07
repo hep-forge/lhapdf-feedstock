@@ -13,7 +13,11 @@ package:
   version: {{ environ.get('ANACONDA_VERSION', version)|replace("-", ".") }}
 
 source:
+  {% if version < 6 %}
+  url: "https://lhapdf.hepforge.org/downloads/?f=old/lhapdf-{{ version }}.tar.gz"
+  {% else %}
   url: "https://lhapdf.hepforge.org/downloads/?f=LHAPDF-{{ version }}.tar.gz"
+  {% endif %}
   {% if versions.get(version, None) %}
   sha256: {{ versions.get(version) }}
   {% endif %}
