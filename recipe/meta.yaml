@@ -26,6 +26,7 @@ requirements:
   build:
     - {{ compiler('cxx') }}
     - {{ compiler('c') }}
+    - {{ compiler('gfortran') }}
     - python
     - cython >=0.24
     - gnuconfig
