@@ -5,5 +5,5 @@ make -j$(nproc)
 make install
 
 git clone https://gitlab.com/hepcedar/lhapdf
-mv lhapdf/migration $PREFIX/share/lhapdf
-find $PREFIX/share/lhapdf -type f -exec sed -i 's/(__doc__)\()/g' {} +
+find lhapdf/migration -type f -exec sed -i 's/(__doc__)\()/g' {} +
+mv lhapdf/migration/* $PREFIX/bin
