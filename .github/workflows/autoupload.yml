@@ -57,8 +57,10 @@ jobs:
           ANACONDA_PACKAGE=$(basename `git rev-parse --show-toplevel` | sed 's,-feedstock,,g')
           echo "ANACONDA_PACKAGE=$ANACONDA_PACKAGE" >> $GITHUB_ENV
           echo "ANACONDA_PACKAGE=$ANACONDA_PACKAGE" >> $GITHUB_OUTPUT
-          
-          ANACONDA_LABEL=${ANACONDA_LABEL:-main}
+
+          ANACONDA_LABEL="${{ github.event.pull_request.base.ref || github.ref }}"
+          ANACONDA_LABEL="${ANACONDA_LABEL#refs/heads/}"
+          ANACONDA_LABEL="${ANACONDA_LABEL:-main}"
           echo "ANACONDA_LABEL=$ANACONDA_LABEL" >> $GITHUB_ENV
           echo "ANACONDA_LABEL=$ANACONDA_LABEL" >> $GITHUB_OUTPUT
 
