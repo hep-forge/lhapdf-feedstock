@@ -18,22 +18,25 @@ source:
 
 requirements:
   build:
-    - 'python<3'
-    - {{ compiler('gfortran') }}
-    - {{ compiler('cxx') }}
+    - 'python=2.7'
     - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('gfortran') }}
     - gnuconfig
     - make
     - automake
     - autoconf
     - libtool
     - cmake
+    - numpy
   host:
-    - 'python<3'
+    - 'python=2.7'
     - libxcrypt
+    - numpy
   run:
-    - 'python<3'
+    - 'python=2.7'
     - libxcrypt
+    - numpy
 
 about:
   home: "https://lhapdf.hepforge.org"
