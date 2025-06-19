@@ -6,4 +6,7 @@ if [ ! -z "${LHAPATH+x}" ]; then
 fi
 if [ -z "${LHAPATH+x}" ]; then
         export LHAPATH="${CONDA_PREFIX}/share/lhapdf5"
+        export PYTHONVERSION=$(python -c 'import sys; sys.stdout.write(str(sys.version_info[0])+"."+str(sys.version_info[1]))')
+        export PYTHONPATH=${CONDA_PREFIX}/lib/python$PYTHONVERSION:$PYTHONPATH
+        export PYTHONPATH=${CONDA_PREFIX}/lib/python$PYTHONVERSION/site-packages/lhapdf5:$PYTHONPATH
 fi

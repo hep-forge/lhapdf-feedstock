@@ -8,7 +8,6 @@ cd ..
 
 if command -v python >/dev/null 2>&1 && \
    [ "$(python -c 'import sys; sys.stdout.write(str(sys.version_info[0]))')" -eq 2 ]; then
-        export PYTHONVERSION=$(python -c 'import sys; sys.stdout.write(str(sys.version_info[0])+"."+str(sys.version_info[1]))')
         export PYTHONPATH=$PWD/../_build_env/lib/python$PYTHONVERSION:$PYTHONPATH
 fi
 
@@ -18,10 +17,7 @@ autoreconf --force --install
 make -j$(nproc)
 make install
 
-mv $PREFIX/bin/lhapdf-config $PREFIX/bin/lhapdf5-config
-mv $PREFIX/include/LHAPDF/LHAPDF.h $PREFIX/include/LHAPDF/LHAPDF5.h
-mv $PREFIX/lib/libLHAPDF.a $PREFIX/lib/libLHAPDF5.a
-mv $PREFIX/lib/libLHAPDF.so $PREFIX/lib/libLHAPDF5.so
+ln -s $PREFIX/lib/libLHAPDF.so $PREFIX/lib/libLHAPDF.dylib
 
 # check python2.x is used — if so, install the migration scripts
 if [ ! -z "$PYTHONVERSION" ]; then
