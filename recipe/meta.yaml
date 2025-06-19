@@ -28,15 +28,15 @@ requirements:
     - autoconf
     - libtool
     - cmake
-    - numpy
+    - 'numpy=1.16.6'
   host:
     - 'python=2.7'
     - libxcrypt
-    - numpy
+    - 'numpy=1.16.6'
   run:
     - 'python=2.7'
     - libxcrypt
-    - numpy
+    - 'numpy=1.16.6'
 
 about:
   home: "https://lhapdf.hepforge.org"
