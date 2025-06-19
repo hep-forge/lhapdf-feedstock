@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# reinstate the backup from outside the environment
+if [ ! -z "${CONDA_BACKUP_LHAPATH}" ]; then
+	export LHAPATH="${CONDA_BACKUP_LHAPATH}"
+	unset CONDA_BACKUP_LHAPATH
+# no backup, just unset
+else
+	unset LHAPATH
+fi

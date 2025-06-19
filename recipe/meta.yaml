@@ -18,20 +18,21 @@ source:
 
 requirements:
   build:
+    - 'python<3'
     - {{ compiler('gfortran') }}
     - {{ compiler('cxx') }}
     - {{ compiler('c') }}
-    - python<3
     - gnuconfig
     - make
     - automake
     - autoconf
     - libtool
+    - cmake
   host:
-    - python<3
+    - 'python<3'
     - libxcrypt
   run:
-    - python<3
+    - 'python<3'
     - libxcrypt
 
 about:
