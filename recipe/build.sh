@@ -24,7 +24,7 @@ mv $PREFIX/lib/libLHAPDF.a $PREFIX/lib/libLHAPDF5.a
 mv $PREFIX/lib/libLHAPDF.so $PREFIX/lib/libLHAPDF5.so
 
 # check python2.x is used — if so, install the migration scripts
-if [ ! -z "$PYTHON_VERSION" ]; then
+if [ ! -z "$PYTHONVERSION" ]; then
 
   mv pyext/build/lib.linux-x86_64-$PYTHONVERSION $PREFIX/lib/python$PYTHONVERSION/site-packages/lhapdf5
   export PYTHONPATH=$PREFIX/lib/python$PYTHONVERSION/site-packages/lhapdf5:$PYTHONPATH
