@@ -6,9 +6,12 @@ cd build-scripts
 cmake $RECIPE_DIR/scripts
 cd ..
 
-if command -v python >/dev/null 2>&1 && \
-   [ "$(python -c 'import sys; sys.stdout.write(str(sys.version_info[0]))')" -eq 2 ]; then
+if [ command -v python >/dev/null 2>&1 ]; then
+
+   PYTHONVERSION=$(python -c 'import sys; print("{}.{}".format(sys.version_info[0], sys.version_info[1]))')
+   if [ "$(python -c 'import sys; sys.stdout.write(str(sys.version_info[0]))')" -eq 2 ]; then
         export PYTHONPATH=$PWD/../_build_env/lib/python$PYTHONVERSION:$PYTHONPATH
+   fi
 fi
 
 autoreconf --force --install
