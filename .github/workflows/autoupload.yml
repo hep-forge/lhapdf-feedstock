@@ -193,6 +193,7 @@ jobs:
         run: |
           [ -z "$ANACONDA_VERSION" ] && exit 1
           for CONDA in $(find pkgs -name "*.conda" | sort); do         
+            echo /usr/share/miniconda/bin/anaconda -t $ANACONDA_TOKEN upload --force "$CONDA" --label "$ANACONDA_LABEL"
             /usr/share/miniconda/bin/anaconda -t $ANACONDA_TOKEN upload --force "$CONDA" --label "$ANACONDA_LABEL"
           done
 
