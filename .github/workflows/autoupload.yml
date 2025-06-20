@@ -56,8 +56,14 @@ jobs:
           ANACONDA_PACKAGE=$(basename `git rev-parse --show-toplevel` | sed 's,-feedstock,,g')
           echo "ANACONDA_PACKAGE=$ANACONDA_PACKAGE" >> $GITHUB_ENV
           echo "ANACONDA_PACKAGE=$ANACONDA_PACKAGE" >> $GITHUB_OUTPUT
-          
-          [ "$GITHUB_REF_TYPE" == "branch" ] && ANACONDA_LABEL=${ANACONDA_LABEL:-${GITHUB_REF_NAME}} || ANACONDA_LABEL=${ANACONDA_LABEL:-main}
+
+          # Derive the branch from event data if it's a tag
+          if [[ "${GITHUB_REF_TYPE}" == "tag" && -f "$GITHUB_EVENT_PATH" ]]; then
+            BASE_BRANCH=$(jq -r '.base_ref' "$GITHUB_EVENT_PATH" | sed 's|refs/heads/||')
+          fi
+      
+          # Fallback to GITHUB_REF_NAME if no base_ref was found
+          ANACONDA_LABEL="${BASE_BRANCH:-${GITHUB_REF_NAME}}"
           echo "ANACONDA_LABEL=$ANACONDA_LABEL" >> $GITHUB_ENV
           echo "ANACONDA_LABEL=$ANACONDA_LABEL" >> $GITHUB_OUTPUT
 
