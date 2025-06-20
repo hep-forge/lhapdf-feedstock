@@ -1,4 +1,4 @@
-name: Anaconda Build & Upload
+name: Anaconda Build & Upload (Old)
 
 on:
   push:
