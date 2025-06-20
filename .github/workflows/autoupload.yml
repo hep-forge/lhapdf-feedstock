@@ -3,7 +3,7 @@ name: Anaconda Build & Upload
 on:
   push:
     branches:
-      - '**'
+      - 'main'
     tags:
       - '*'
 
