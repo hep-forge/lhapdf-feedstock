@@ -21,7 +21,7 @@ source:
 requirements:
   build:
     - 'python=2.7'
-    - 'numpy=1.16.6'
+    - 'numpy=1.16'
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('gfortran') }}=8
@@ -33,11 +33,11 @@ requirements:
     - cmake
   host:
     - 'python=2.7'
-    - 'numpy=1.16.6'
+    - 'numpy=1.16'
     - libxcrypt
   run:
     - 'python=2.7'
-    - 'numpy=1.16.6'
+    - 'numpy=1.16'
     - libxcrypt
 
 about:
