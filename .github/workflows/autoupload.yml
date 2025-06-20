@@ -51,16 +51,13 @@ jobs:
         name: Set Package Name, Version and Label
         run: |
           [ -n "$COMMIT_TYPE" ] && COMMIT_TYPE="-$COMMIT_TYPE"
-          echo $COMMIT_VERSION
           [[ $COMMIT_VERSION == *-* ]] && ANACONDA_LABEL=${COMMIT_VERSION#*-} || ANACONDA_LABEL=""
 
           ANACONDA_PACKAGE=$(basename `git rev-parse --show-toplevel` | sed 's,-feedstock,,g')
           echo "ANACONDA_PACKAGE=$ANACONDA_PACKAGE" >> $GITHUB_ENV
           echo "ANACONDA_PACKAGE=$ANACONDA_PACKAGE" >> $GITHUB_OUTPUT
-
-          ANACONDA_LABEL="${{ github.event.base_ref }}"
-          ANACONDA_LABEL="${ANACONDA_LABEL#refs/heads/}"
-          ANACONDA_LABEL="${ANACONDA_LABEL:-main}"
+          
+          [ "$GITHUB_REF_TYPE" == "branch" ] && ANACONDA_LABEL=${ANACONDA_LABEL:-${GITHUB_REF_NAME}} || ANACONDA_LABEL=${ANACONDA_LABEL:-main}
           echo "ANACONDA_LABEL=$ANACONDA_LABEL" >> $GITHUB_ENV
           echo "ANACONDA_LABEL=$ANACONDA_LABEL" >> $GITHUB_OUTPUT
 
@@ -121,11 +118,14 @@ jobs:
           
       - name: Install Forge & Tools
         run: |
-          /usr/share/miniconda/bin/conda install -c conda-forge -y conda-smithy conda-verify conda-package-handling "liblief<0.15"
+          /usr/share/miniconda/bin/conda install -c conda-forge -y conda-smithy conda-verify conda-package-handling anaconda-client
+          /usr/share/miniconda/bin/conda config --set channel_priority strict
           /usr/share/miniconda/bin/conda config --add channels defaults
           /usr/share/miniconda/bin/conda config --add channels conda-forge
+          /usr/share/miniconda/bin/conda config --add channels nvidia
+          /usr/share/miniconda/bin/conda config --add channels torch
           /usr/share/miniconda/bin/conda config --add channels hep-forge
-          
+
       - name: Build Package
         env:
           COMMIT_LATEST_TAG: ${{needs.env.outputs.COMMIT_LATEST_TAG}}
@@ -137,11 +137,17 @@ jobs:
           ANACONDA_LABEL:   ${{ needs.env.outputs.ANACONDA_LABEL }}
           ANACONDA_VERSION: ${{ needs.env.outputs.ANACONDA_VERSION }}
           ANACONDA_PACKAGE: ${{ needs.env.outputs.ANACONDA_PACKAGE }}
+          ANACONDA_TOKEN:   ${{ secrets.ANACONDA_TOKEN }}
         run: |
           /usr/share/miniconda/bin/conda build recipe . --output-folder pkgs
           for PKG in $(find pkgs -name "*.tar.bz2"); do  
               /usr/share/miniconda/bin/cph transmute $PKG .conda
           done
+          
+          for CONDA in $(find pkgs -name "*.conda" | sort); do         
+            /usr/share/miniconda/bin/anaconda -t $ANACONDA_TOKEN upload --force "$CONDA" --label "$ANACONDA_LABEL"
+          done
+          
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
