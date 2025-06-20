@@ -51,16 +51,13 @@ jobs:
         name: Set Package Name, Version and Label
         run: |
           [ -n "$COMMIT_TYPE" ] && COMMIT_TYPE="-$COMMIT_TYPE"
-          echo $COMMIT_VERSION
-          [[ $COMMIT_VERSION == *-* ]] && ANACONDA_LABEL=${COMMIT_VERSION#*-} || ANACONDA_LABEL=""
+          [[ $COMMIT_VERSION == *-* ]] && ANACONDA_LABEL=${COMMIT_VERSION#*-} || ANACONDA_LABEL="$GITHUB_REF_NAME"
 
           ANACONDA_PACKAGE=$(basename `git rev-parse --show-toplevel` | sed 's,-feedstock,,g')
           echo "ANACONDA_PACKAGE=$ANACONDA_PACKAGE" >> $GITHUB_ENV
           echo "ANACONDA_PACKAGE=$ANACONDA_PACKAGE" >> $GITHUB_OUTPUT
-
-          ANACONDA_LABEL="${{ github.event.ref || github.ref }}"
-          ANACONDA_LABEL="${ANACONDA_LABEL#refs/heads/}"
-          ANACONDA_LABEL="${ANACONDA_LABEL:-main}"
+          
+          ANACONDA_LABEL=${ANACONDA_LABEL:-main}
           echo "ANACONDA_LABEL=$ANACONDA_LABEL" >> $GITHUB_ENV
           echo "ANACONDA_LABEL=$ANACONDA_LABEL" >> $GITHUB_OUTPUT
 
@@ -193,7 +190,6 @@ jobs:
         run: |
           [ -z "$ANACONDA_VERSION" ] && exit 1
           for CONDA in $(find pkgs -name "*.conda" | sort); do         
-            echo /usr/share/miniconda/bin/anaconda -t $ANACONDA_TOKEN upload --force "$CONDA" --label "$ANACONDA_LABEL"
             /usr/share/miniconda/bin/anaconda -t $ANACONDA_TOKEN upload --force "$CONDA" --label "$ANACONDA_LABEL"
           done
 
