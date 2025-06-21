@@ -3,10 +3,11 @@
 # preserve the user's existing setting
 if [ ! -z "${LHAPATH+x}" ]; then
 	export CONDA_BACKUP_LHAPATH="${LHAPATH}"
+ 	unset LHAPATH
 fi
 if [ -z "${LHAPATH+x}" ]; then
         export LHAPATH="${CONDA_PREFIX}/share/lhapdf5"
         export PYTHONVERSION=$(python -c 'import sys; sys.stdout.write(str(sys.version_info[0])+"."+str(sys.version_info[1]))')
-        export PYTHONPATH=${CONDA_PREFIX}/lib/python$PYTHONVERSION:$PYTHONPATH
-        export PYTHONPATH=${CONDA_PREFIX}/lib/python$PYTHONVERSION/site-packages/lhapdf5:$PYTHONPATH
+        export PYTHONPATH=$PYTHONPATH:${CONDA_PREFIX}/lib/python$PYTHONVERSION
+        export PYTHONPATH=$PYTHONPATH:${CONDA_PREFIX}/lib/python$PYTHONVERSION/site-packages/lhapdf5
 fi
