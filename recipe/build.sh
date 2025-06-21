@@ -24,8 +24,8 @@ ln -s $PREFIX/lib/libLHAPDF.so $PREFIX/lib/libLHAPDF.dylib
 # check python2.x is used — if so, install the migration scripts
 if [ ! -z "$PYTHONVERSION" ]; then
 
-  mv pyext/build/lib.linux-x86_64-$PYTHONVERSION $PREFIX/lib/python$PYTHONVERSION/site-packages/lhapdf5
-  export PYTHONPATH=$PREFIX/lib/python$PYTHONVERSION/site-packages/lhapdf5:$PYTHONPATH
+  mv pyext/build/lib.linux-x86_64-$PYTHONVERSION $PREFIX/lib/python$PYTHONVERSION/site-packages/lhapdf
+  export PYTHONPATH=$PREFIX/lib/python$PYTHONVERSION/site-packages/lhapdf:$PYTHONPATH
 
   git clone https://gitlab.com/hepcedar/lhapdf
   cp -R lhapdf/migration $PREFIX/share/lhapdf
