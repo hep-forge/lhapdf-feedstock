@@ -3,6 +3,8 @@
     "5.9.1": "86b9b046d7f25627ce2aab6847ef1c5534972f4bae18de98225080cf5086919c"
 } %}
 
+{% set gnu_build_pin = " 14.*" %}
+{% set gnu_host_pin   = " >=14" %}
 
 {% set version = environ.get('COMMIT_VERSION', None) %}
 {% set version = version or versions.keys()|first %}
@@ -24,9 +26,9 @@ source:
 
 requirements:
   build:
-    - {{ compiler('cxx') }}
-    - {{ compiler('c') }}
-    - {{ compiler('gfortran') }}
+    - {{ compiler('cxx') }}{{ gnu_build_pin }}
+    - {{ compiler('c') }}{{ gnu_build_pin }}
+    - {{ compiler('gfortran') }}{{ gnu_build_pin }}
     - python
     - cython >=0.24
     - gnuconfig
@@ -36,6 +38,7 @@ requirements:
     - autoconf
     - libtool
   host:
+    - libstdcxx-ng{{gnu_host_pin}}
     - python
     - cython >=0.24
   run:
