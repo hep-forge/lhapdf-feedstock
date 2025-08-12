@@ -26,9 +26,9 @@ source:
 
 requirements:
   build:
-    - {{ compiler('cxx') }}{{ gnu_build_pin }}
-    - {{ compiler('c') }}{{ gnu_build_pin }}
-    - {{ compiler('gfortran') }}{{ gnu_build_pin }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('c') }}
+    - {{ compiler('gfortran') }}
     - python
     - cython >=0.24
     - gnuconfig
@@ -38,7 +38,6 @@ requirements:
     - autoconf
     - libtool
   host:
-    - libstdcxx-ng{{gnu_host_pin}}
     - python
     - cython >=0.24
   run:
