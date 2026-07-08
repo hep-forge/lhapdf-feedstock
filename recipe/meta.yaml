@@ -32,6 +32,7 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ compiler('c') }}
     - {{ compiler('gfortran') }}
+    - {{ stdlib('c') }}
     - python
     - cython >=0.24
     - gnuconfig

@@ -18,16 +18,7 @@ done
 # non-conda autotools) -- conda-forge's own lhapdf-feedstock does the same.
 autoreconf --install --force
 
-# Belt-and-suspenders: whatever sysroot_linux-64 actually gets solved for
-# this environment (can be forced newer than our own c_stdlib_version
-# preference by an unrelated dependency's own requirement, e.g.
-# python/cython) determines which glibc headers get used. -std=gnu17
-# alone didn't stop glibc's C23 strtol/atoi redirect (__isoc23_strtol, a
-# GLIBC_2.38 symbol) -- confirmed via CI that the flag really does reach
-# every compile, so the GNU dialect itself (as opposed to strict ISO)
-# must still be enabling the feature-test macros that gate it. Use
-# strict -std=c17/c++17 (no "gnu" prefix) instead.
-./configure --prefix=$PREFIX FCFLAGS="${FFLAGS} -std=legacy" CFLAGS="${CFLAGS} -std=c17" CXXFLAGS="${CXXFLAGS} -std=c++17"
+./configure --prefix=$PREFIX FCFLAGS="${FFLAGS} -std=legacy" CXXFLAGS="${CXXFLAGS}"
 
 NPROC=$(nproc 2>/dev/null || sysctl -n hw.ncpu)
 make -j$NPROC
