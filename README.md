@@ -15,8 +15,8 @@ LHAPDF is the standard tool for evaluating parton distribution functions (PDFs) 
 
 | Architecture | Latest published |
 |--------------|------------------|
-| linux-amd64 (`linux-64`) | ✅ `6.5.5` |
-| linux-arm64 (`linux-aarch64`) | ✅ `6.5.5` |
+| linux-amd64 (`linux-64`) | ✅ `6.5.6` |
+| linux-arm64 (`linux-aarch64`) | ✅ `6.5.6` |
 
 _As of the last feedstock render; the badges above are live._
 
