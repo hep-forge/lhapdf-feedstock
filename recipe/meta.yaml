@@ -41,6 +41,7 @@ requirements:
     - automake
     - autoconf
     - libtool
+    - sed        # bin/lhapdf-config.in patch uses `sed -i`; needs GNU semantics
   host:
     - python
     - cython >=0.24
