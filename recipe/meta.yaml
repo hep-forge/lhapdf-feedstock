@@ -31,7 +31,7 @@ requirements:
   build:
     - {{ compiler('cxx') }}
     - {{ compiler('c') }}
-    - {{ compiler('gfortran') }}
+    - {{ compiler('fortran') }}
     - {{ stdlib('c') }}
     - python
     - cython >=0.24
