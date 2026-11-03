@@ -42,7 +42,8 @@ fi
 ./configure --prefix=$PREFIX FCFLAGS="${FFLAGS} -std=legacy" CXXFLAGS="${CXXFLAGS}"
 
 if [[ "$(uname)" == "Darwin" ]]; then
-  grep -rl -- '-lstdc++' --include=libtool --include=Makefile . | xargs -r sed -i 's/-lstdc++/-lc++/g'
+  # options before the pattern: BSD grep (macOS) takes all after it as files
+  grep -rl --include=libtool --include=Makefile -e '-lstdc++' . | xargs sed -i 's/-lstdc++/-lc++/g'
 fi
 
 NPROC=$(nproc 2>/dev/null || sysctl -n hw.ncpu)
