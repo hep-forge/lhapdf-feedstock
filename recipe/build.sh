@@ -24,9 +24,16 @@ sed -i 's/--includedir)   show_incdir=1 ;;/--includedir|--incdir) show_incdir=1 
 # regenerated libtool adds. Linking it there finds GCC's libstdc++ (shipped
 # with gfortran), which then loads next to libc++, and `import lhapdf`
 # segfaults. Ask for libc++ instead.
+#
+# The same script also links the module against libpython by full path. On
+# macOS conda's python has the interpreter built in, so that loads a second
+# Python runtime and the import crashes too: let the interpreter provide
+# Python's symbols, as extensions on macOS are meant to.
 if [[ "$(uname)" == "Darwin" ]]; then
   sed -i 's/libraries = \["stdc++", "LHAPDF"\]/libraries = ["c++", "LHAPDF"]/' wrappers/python/build.py.in
   grep -q 'libraries = \["c++", "LHAPDF"\]' wrappers/python/build.py.in
+  sed -i 's|^pyargs += " " + libpy$|pyargs += " -undefined dynamic_lookup"|' wrappers/python/build.py.in
+  grep -q 'pyargs += " -undefined dynamic_lookup"' wrappers/python/build.py.in
 fi
 
 # Regenerate configure/Makefile.in with conda's own autotools rather than
