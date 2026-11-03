@@ -48,6 +48,12 @@ requirements:
   run:
     - python
 
+test:
+  commands:
+    - lhapdf-config --version
+    - python -c "import lhapdf; print(lhapdf.version())"
+    - lhapdf --help
+
 about:
   home: "https://lhapdf.hepforge.org"
   license: "GPL-3.0"
